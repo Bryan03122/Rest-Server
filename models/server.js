@@ -1,15 +1,22 @@
 const express = require('express')
 const cors = require('cors')
+const { dbConnection } = require('../databse/config')
 class Server {
 
     constructor(){
         this.app = express()
         this.port = process.env.PORT
         this.usersPath = '/api/users'
+        //Connect to databse
+        this.connectDB()
         //Middlewares
         this.middlewares()
         //App Routes
         this.routes()
+    }
+
+    async connectDB() {
+        await dbConnection()
     }
 
     middlewares() {
