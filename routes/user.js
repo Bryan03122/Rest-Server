@@ -12,7 +12,10 @@ const { usuariosGet,
         usuariosDelete 
         } = require('../controllers/users')
 
-const { validateFields } = require('../middlewares/validate-fields')
+const {
+        validateFields, validateJWT, isAdminRole, hasRole
+} = require('../middlewares')
+
 
 const router = Router()
 
@@ -37,6 +40,9 @@ router.post('/',[
  usuariosPost)  
 
 router.delete('/:id', [
+        validateJWT,
+        hasRole('ADMIN_ROLE', 'SALES_ROLE'),
+        //isAdminRole,
         check('id', 'Invalid ID').isMongoId(),
         check('id').custom( validateUserById ),  
         validateFields      
